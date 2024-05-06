@@ -15,18 +15,9 @@ ID__LEFT = 2
 
 controller_port_name = "/dev/input/js1"
 
-
-# Speed = 10
-# cp.Control_Motor(Speed, 1, Acce, Brake_P)
-# Speed = -10
-# cp.Control_Motor(Speed, 2, Acce, Brake_P)
-
-# time.sleep(5)
-# print('\t$$Finish')
-
-Speed = 0
-cp.Control_Motor(Speed, 1, Acce, Brake_P)
-cp.Control_Motor(Speed, 2, Acce, Brake_P)
+# モーター初期化
+cp.Control_Motor(0, ID_RIGHT, Acce, Brake_P)
+cp.Control_Motor(0, ID__LEFT, Acce, Brake_P)
 
 def transf(raw):
     temp = (raw+32767)/65534
