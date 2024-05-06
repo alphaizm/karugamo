@@ -13,6 +13,8 @@ Brake_P = 0
 ID_RIGHT = 1
 ID__LEFT = 2
 
+SPEED_COEFFICIENT = 200
+
 controller_port_name = "/dev/input/js1"
 
 # モーター初期化
@@ -35,7 +37,7 @@ def transf1(raw):
         return 0
     # Return a value between 0.3 and 1.0
     else:
-        return round(temp, 1)
+        return round(-temp, 1)
 
 class MyController(Controller):
 
@@ -45,14 +47,20 @@ class MyController(Controller):
     # 【＜－左】↓   ※－指定
     def on_L3_down(self, value):
         value = transf(value)
-        cp.Control_Motor(-50, ID__LEFT, Acce, Brake_P)
-        print(value)
+
+        # －指定するために－反転
+        rpm = -int(value * SPEED_COEFFICIENT)
+        cp.Control_Motor(rpm, ID__LEFT, Acce, Brake_P)
+        print(str(value) + "/rpm:" + str(rpm))
             
     # 【＜－左】↑   ※＋指定
     def on_L3_up(self, value):
         value = transf1(value)
-        cp.Control_Motor(50, ID__LEFT, Acce, Brake_P)
-        print(value)
+        
+        # ＋指定するために－反転
+        rpm = -int(value * SPEED_COEFFICIENT)
+        cp.Control_Motor(rpm, ID__LEFT, Acce, Brake_P)
+        print(str(value) + "/rpm:" + str(rpm))
         
     # 【＜－左】離し
     def on_L3_y_at_rest(self):
@@ -62,37 +70,39 @@ class MyController(Controller):
     # 【右－＞】↓   ※＋指定
     def on_R3_down(self, value):
         value = transf(value)
-        cp.Control_Motor(50, ID_RIGHT, Acce, Brake_P)
-        print(value)
+
+        rpm = int(value * SPEED_COEFFICIENT)
+        cp.Control_Motor(rpm, ID_RIGHT, Acce, Brake_P)
+        print(str(value) + "/rpm:" + str(rpm))
             
     # 【右－＞】↑   ※－指定
     def on_R3_up(self, value):
         value = transf1(value)
-        cp.Control_Motor(-50, ID_RIGHT, Acce, Brake_P)
-        print(value)
+        
+        rpm = int(value * SPEED_COEFFICIENT)
+        cp.Control_Motor(rpm, ID_RIGHT, Acce, Brake_P)
+        print(str(value) + "/rpm:" + str(rpm))
 
     # 【右－＞】離し
     def on_R3_y_at_rest(self):
         cp.Control_Motor(0, ID_RIGHT, Acce, Brake_P)
         print("on_R3_y_at_rest:R3")
 
-
     def on_x_press(self):
-        print("on_x_press")
         # nop
+        print("on_x_press")
 
     def on_x_release(self):
-        print("on_x_release")
         # nop
+        print("on_x_release")
 
     def on_R3_right(self, value):
-        print("on_Rx_right")
         # nop
+        print("on_Rx_right")
 
     def on_R3_left(self, value):
-        print("on_Rx_left")
         # nop
-
+        print("on_Rx_left")
 
 controller = MyController(interface=controller_port_name, connecting_using_ds4drv=False)
 controller.listen()
