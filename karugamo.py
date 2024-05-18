@@ -13,7 +13,8 @@ Brake_P = 0
 ID_RIGHT = 1
 ID__LEFT = 2
 
-SPEED_COEFFICIENT = 200
+SPEED_COEFFICIENT = 20
+SPEED_GO = 50
 
 controller_port_name = "/dev/input/js1"
 
@@ -88,12 +89,16 @@ class MyController(Controller):
         cp.Control_Motor(0, ID_RIGHT, Acce, Brake_P)
         print("on_R3_y_at_rest:R3")
 
+    # 【batu】oshi
     def on_x_press(self):
-        # nop
+        cp.Control_Motor(SPEED_GO, ID__LEFT, Acce, Brake_P)
+        cp.Control_Motor(-SPEED_GO, ID_RIGHT, Acce, Brake_P)
         print("on_x_press")
 
+    # 【batu】離し
     def on_x_release(self):
-        # nop
+        cp.Control_Motor(0, ID__LEFT, Acce, Brake_P)
+        cp.Control_Motor(0, ID_RIGHT, Acce, Brake_P)
         print("on_x_release")
 
     def on_R3_right(self, value):
