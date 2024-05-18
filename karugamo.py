@@ -22,6 +22,10 @@ controller_port_name = "/dev/input/js1"
 cp.Control_Motor(0, ID_RIGHT, Acce, Brake_P)
 cp.Control_Motor(0, ID__LEFT, Acce, Brake_P)
 
+def motor_stop():
+    cp.Control_Motor(0, ID_RIGHT, Acce, Brake_P)
+    cp.Control_Motor(0, ID__LEFT, Acce, Brake_P)
+
 def transf(raw):
     temp = (raw+32767)/65534
     # Filter values that are too weak for the motors to move
@@ -97,8 +101,7 @@ class MyController(Controller):
 
     # 【batu】離し
     def on_x_release(self):
-        cp.Control_Motor(0, ID__LEFT, Acce, Brake_P)
-        cp.Control_Motor(0, ID_RIGHT, Acce, Brake_P)
+        motor_stop
         print("on_x_release")
 
     def on_R3_right(self, value):
