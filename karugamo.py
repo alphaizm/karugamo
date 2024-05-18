@@ -14,7 +14,9 @@ ID_RIGHT = 1
 ID__LEFT = 2
 
 SPEED_COEFFICIENT = 20
-SPEED_GO = 50
+SPEED_5 = 50
+SPEED_4 = 40
+SPEED_3 = 30
 
 controller_port_name = "/dev/input/js1"
 
@@ -93,16 +95,38 @@ class MyController(Controller):
         cp.Control_Motor(0, ID_RIGHT, Acce, Brake_P)
         print("on_R3_y_at_rest:R3")
 
-    # 【batu】oshi
+    # 【×】押し
     def on_x_press(self):
-        cp.Control_Motor(SPEED_GO, ID__LEFT, Acce, Brake_P)
-        cp.Control_Motor(-SPEED_GO, ID_RIGHT, Acce, Brake_P)
+        cp.Control_Motor(SPEED_5, ID__LEFT, Acce, Brake_P)
+        cp.Control_Motor(-SPEED_5, ID_RIGHT, Acce, Brake_P)
         print("on_x_press")
 
-    # 【batu】離し
+    # 【×】離し
     def on_x_release(self):
         motor_stop
         print("on_x_release")
+
+    # 【□】押し
+    def on_square_press(self):
+        cp.Control_Motor(SPEED_4, ID__LEFT, Acce, Brake_P)
+        cp.Control_Motor(-SPEED_4, ID_RIGHT, Acce, Brake_P)
+        print("on_square_press")
+
+    # 【□】離し
+    def on_square_release(self):
+        motor_stop
+        print("on_square_release")
+
+    # 【△】押し
+    def on_triangle_press(self):
+        cp.Control_Motor(SPEED_3, ID__LEFT, Acce, Brake_P)
+        cp.Control_Motor(-SPEED_3, ID_RIGHT, Acce, Brake_P)
+        print("on_tri_press")
+
+    # 【△】離し
+    def on_triangle_release(self):
+        motor_stop
+        print("on_tri_release")
 
     def on_R3_right(self, value):
         # nop
